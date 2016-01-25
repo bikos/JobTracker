@@ -1,0 +1,24 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.jobtrackerdb.data.Paper" table="paper" catalog="jobtracker" dynamic-insert="false" dynamic-update="false">
+        <id name="paperId" type="integer">
+            <column name="paperID"/>
+            <generator class="identity"/>
+        </id>
+        <property name="paperName" type="string">
+            <column name="paperName" length="30" not-null="true"/>
+        </property>
+        <property name="paperDimension" type="string">
+            <column name="paperDimension" length="10" not-null="true"/>
+        </property>
+        <property name="paperWeight" type="integer">
+            <column name="paperWeight" not-null="true"/>
+        </property>
+        <set name="jobs" inverse="true" cascade="">
+            <key>
+                <column name="fkPaperID"/>
+            </key>
+            <one-to-many class="com.jobtrackerdb.data.Job"/>
+        </set>
+    </class>
+</hibernate-mapping>

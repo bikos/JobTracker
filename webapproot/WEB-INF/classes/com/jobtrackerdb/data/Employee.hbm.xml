@@ -1,0 +1,27 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.jobtrackerdb.data.Employee" table="employee" catalog="jobtracker" dynamic-insert="false" dynamic-update="false">
+        <id name="employeeId" type="integer">
+            <column name="employeeID"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="employeeFname" type="string">
+            <column name="employeeFname" length="25" not-null="true"/>
+        </property>
+        <property name="employeeLname" type="string">
+            <column name="employeeLname" length="25" not-null="true"/>
+        </property>
+        <property name="employeePhone" type="integer">
+            <column name="employeePhone" not-null="true"/>
+        </property>
+        <property name="employeeAddress" type="string">
+            <column name="employeeAddress" not-null="true"/>
+        </property>
+        <set name="jobs" inverse="true" cascade="">
+            <key>
+                <column name="fkEmployeeID" not-null="true"/>
+            </key>
+            <one-to-many class="com.jobtrackerdb.data.Job"/>
+        </set>
+    </class>
+</hibernate-mapping>

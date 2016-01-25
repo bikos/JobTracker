@@ -1,0 +1,45 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.jobtrackerdb.data.Job" table="job" catalog="jobtracker" dynamic-insert="false" dynamic-update="false">
+        <id name="jobId" type="integer">
+            <column name="jobId"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="jobNumber" type="integer">
+            <column name="jobNumber" not-null="true"/>
+        </property>
+        <property name="jobSections" type="integer">
+            <column name="jobSections" not-null="true"/>
+        </property>
+        <property name="jobCompletedTime" type="timestamp">
+            <column name="jobCompletedTime" length="19" not-null="true"/>
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="40" not-null="true"/>
+        </property>
+        <property name="pages" type="integer">
+            <column name="pages" not-null="true"/>
+        </property>
+        <property name="jobWeek" type="integer">
+            <column name="jobWeek" not-null="true"/>
+        </property>
+        <property name="cartNumber" type="integer">
+            <column name="cartNumber" not-null="true"/>
+        </property>
+        <property name="jobName" type="string">
+            <column name="jobName" length="30" not-null="true"/>
+        </property>
+        <many-to-one name="jobType" class="com.jobtrackerdb.data.JobType">
+            <column name="fkJobTypeID" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="machine" class="com.jobtrackerdb.data.Machine">
+            <column name="fkMachineID" length="5" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="paper" class="com.jobtrackerdb.data.Paper">
+            <column name="fkPaperID"/>
+        </many-to-one>
+        <many-to-one name="employee" class="com.jobtrackerdb.data.Employee">
+            <column name="fkEmployeeID" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

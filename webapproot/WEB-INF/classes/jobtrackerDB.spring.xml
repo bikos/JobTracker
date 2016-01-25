@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+
+<!-- Generated 08/04/2015 04:17:05
+
+Configuration for 'jobtrackerDB' database service
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+    <bean 
+        id="jobtrackerDB"
+        class="com.jobtrackerdb.JobtrackerDB"
+        scope="singleton"
+        lazy-init="true">
+        <property name="dataServiceManager">
+            <ref bean="jobtrackerDBDataService"/>
+        </property>
+        <property name="taskManager">
+            <ref bean="jobtrackerDBTaskMgr"/>
+        </property>
+    </bean>
+
+
+    <bean 
+        class="com.wavemaker.runtime.data.spring.WMPropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:jobtrackerDB.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean 
+        id="jobtrackerDBDataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
+        lazy-init="true">
+        <property name="driverClassName" value="${jobtrackerDB.driverClassName}"/>
+        <property name="url" value="${jobtrackerDB.connectionUrl}"/>
+        <property name="username" value="${jobtrackerDB.username}"/>
+        <property name="password" value="${jobtrackerDB.password}"/>
+    </bean>
+
+
+    <bean 
+        id="jobtrackerDBTxMgr" 
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+        lazy-init="true">
+        <property name="sessionFactory">
+            <ref bean="jobtrackerDBSessionFactory"/>
+        </property>
+    </bean>
+
+
+    <bean 
+        id="jobtrackerDBHibernateTemplate"
+        class="org.springframework.orm.hibernate3.HibernateTemplate"
+        lazy-init="true">
+        <property name="sessionFactory"> 
+            <ref bean="jobtrackerDBSessionFactory"/>
+        </property>
+    </bean>  
+
+
+    <bean 
+        id="jobtrackerDBSessionFactory" 
+        class="com.wavemaker.runtime.data.spring.ConfigurationAndSessionFactoryBean"
+        lazy-init="true">
+
+        <!-- A unique name for this SessionFactory's configuration -->
+        <property name="name" value="jobtrackerDB"/>
+        <property name="dataSource" ref="jobtrackerDBDataSource"/>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${jobtrackerDB.dialect}</prop>
+                <prop key="hibernate.transaction.factory_class">
+                    org.hibernate.transaction.JDBCTransactionFactory
+                </prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                
+            </props> 
+        </property>
+
+        <property name="mappingResources">
+            <list>
+
+<value>com/jobtrackerdb/data/JobType.hbm.xml</value>
+<value>com/jobtrackerdb/data/Paper.hbm.xml</value>
+<value>com/jobtrackerdb/data/Job.hbm.xml</value>
+<value>com/jobtrackerdb/data/Machine.hbm.xml</value>
+<value>com/jobtrackerdb/data/Employee.hbm.xml</value>
+
+<value>com/jobtrackerdb/data/JobType.ql.xml</value>
+<value>com/jobtrackerdb/data/app-queries.ql.xml</value>
+
+            </list>
+        </property>
+
+    </bean>
+
+
+    <!-- the data service bean instance is injected into the service bean -->
+    <bean 
+        id="jobtrackerDBDataService" 
+        class="com.wavemaker.runtime.data.spring.SpringDataServiceManager"
+        lazy-init="true">
+        <constructor-arg>
+            <!-- the value of the "name" property of the SessionFactory -->
+            <value>jobtrackerDB</value>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="jobtrackerDBHibernateTemplate"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="jobtrackerDBTxMgr"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="jobtrackerDBTaskMgr"/>
+        </constructor-arg>
+        <constructor-arg>
+            <map>
+                <entry key="useIndividualCRUDOperations" value="false"/>
+                <entry key="refreshEntities" value=""/> 
+            </map>
+        </constructor-arg>
+    </bean>
+
+
+    <bean 
+        id="jobtrackerDBTaskMgr"
+        class="com.wavemaker.runtime.data.DefaultTaskManager"
+        lazy-init="true"/>
+
+    <bean class="com.wavemaker.runtime.service.events.EventWire"
+        lazy-init="false">
+        <property name="serviceWire" ref="jobtrackerDBServiceWire"/>
+        <property name="eventListener">
+            <bean class="com.wavemaker.runtime.data.DataServiceEventListener"/>
+        </property>
+    </bean>
+
+    <bean id="jobtrackerDBServiceWire"
+        class="com.wavemaker.runtime.service.reflect.ReflectServiceWire"
+        lazy-init="false" scope="singleton">
+        <property name="serviceId" value="jobtrackerDB"/>
+        <property name="serviceType" ref="DataService"/>
+    </bean>
+
+</beans>

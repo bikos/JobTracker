@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<service xmlns="http://www.activegrid.com/namespaces/ServiceDefinitions/1.0" id="jobtrackerDB" class="com.jobtrackerdb.JobtrackerDB" CRUDService="true" type="DataService" springFile="jobtrackerDB.spring.xml">
+    <operation operationType="hqlquery" name="getJobTypeById">
+        <parameter name="id" typeRef="java.lang.Integer" isList="false"/>
+        <return typeRef="com.jobtrackerdb.data.JobType" isList="false"/>
+    </operation>
+    <dataobjects>
+        <dataobject javaType="com.jobtrackerdb.data.Employee" supportsQuickData="true">
+            <element name="employeeId" typeRef="java.lang.Integer" isList="false" allowNull="false">
+                <require>delete</require>
+                <require>read</require>
+                <require>update</require>
+                <require>insert</require>
+                <noChange>delete</noChange>
+                <noChange>read</noChange>
+                <noChange>update</noChange>
+            </element>
+            <element name="employeeFname" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="employeeLname" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="employeePhone" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="employeeAddress" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="jobs" typeRef="com.jobtrackerdb.data.Job" isList="true" allowNull="true"/>
+        </dataobject>
+        <dataobject javaType="com.jobtrackerdb.data.Job" supportsQuickData="true">
+            <element name="jobId" typeRef="java.lang.Integer" isList="false" allowNull="false">
+                <require>delete</require>
+                <require>read</require>
+                <require>update</require>
+                <require>insert</require>
+                <noChange>delete</noChange>
+                <noChange>read</noChange>
+                <noChange>update</noChange>
+            </element>
+            <element name="jobNumber" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="jobSections" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="jobCompletedTime" typeRef="java.util.Date" isList="false" allowNull="false"/>
+            <element name="status" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="pages" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="jobWeek" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="cartNumber" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="jobName" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="jobType" typeRef="com.jobtrackerdb.data.JobType" isList="false" allowNull="false"/>
+            <element name="machine" typeRef="com.jobtrackerdb.data.Machine" isList="false" allowNull="false"/>
+            <element name="paper" typeRef="com.jobtrackerdb.data.Paper" isList="false" allowNull="true"/>
+            <element name="employee" typeRef="com.jobtrackerdb.data.Employee" isList="false" allowNull="false"/>
+        </dataobject>
+        <dataobject javaType="com.jobtrackerdb.data.JobType" supportsQuickData="true">
+            <element name="jobTypeId" typeRef="java.lang.Integer" isList="false" allowNull="false">
+                <require>delete</require>
+                <require>read</require>
+                <require>update</require>
+                <noChange>delete</noChange>
+                <noChange>read</noChange>
+                <noChange>update</noChange>
+                <exclude>insert</exclude>
+            </element>
+            <element name="jobTypeName" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="jobs" typeRef="com.jobtrackerdb.data.Job" isList="true" allowNull="true"/>
+        </dataobject>
+        <dataobject javaType="com.jobtrackerdb.data.Machine" supportsQuickData="true">
+            <element name="machineId" typeRef="java.lang.String" isList="false" allowNull="false">
+                <require>delete</require>
+                <require>read</require>
+                <require>update</require>
+                <require>insert</require>
+                <noChange>delete</noChange>
+                <noChange>read</noChange>
+                <noChange>update</noChange>
+            </element>
+            <element name="machineName" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="startCount" typeRef="java.lang.Integer" isList="false" allowNull="true"/>
+            <element name="endCount" typeRef="java.lang.Integer" isList="false" allowNull="true"/>
+            <element name="hoursRun" typeRef="java.lang.Float" isList="false" allowNull="true"/>
+            <element name="issue" typeRef="java.lang.String" isList="false" allowNull="true"/>
+            <element name="jobs" typeRef="com.jobtrackerdb.data.Job" isList="true" allowNull="true"/>
+        </dataobject>
+        <dataobject javaType="com.jobtrackerdb.data.Paper" supportsQuickData="true">
+            <element name="paperId" typeRef="java.lang.Integer" isList="false" allowNull="false">
+                <require>delete</require>
+                <require>read</require>
+                <require>update</require>
+                <noChange>delete</noChange>
+                <noChange>read</noChange>
+                <noChange>update</noChange>
+                <exclude>insert</exclude>
+            </element>
+            <element name="paperName" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="paperDimension" typeRef="java.lang.String" isList="false" allowNull="false"/>
+            <element name="paperWeight" typeRef="java.lang.Integer" isList="false" allowNull="false"/>
+            <element name="jobs" typeRef="com.jobtrackerdb.data.Job" isList="true" allowNull="true"/>
+        </dataobject>
+    </dataobjects>
+</service>
